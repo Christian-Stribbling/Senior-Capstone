@@ -1,0 +1,90 @@
+System Documentation
+
+mysql.php
+Every php will call this file once to connect to the database. The database connection is $dbc and it will alert the user whether the connection was successful or not.
+
+Create.php / View.php (*means not in View.php)
+First off its important to note Create and View php share similar but Create has a few more features to it than View.php
+
+Handles the manage and creation aspect for the restaurant owners and hostess. Here lies where all of the data can be manipulated for
+the customer to view on the web.
+
+HTML Tags
+The first important tag is the table tag which holds the information for: Table Number, Occupancy, Server and Number of Seats
+
+*The next tag is a form action that allows the user to enter a number with the minimum being 1 and then pressing the delete button to go to delete.php 
+which will then delete the table from the database and print the new list.
+
+There are six global input tags that control: Table Number, xLocation, yLocation, Occupancy, Number of Seats and The Server. these values are changed by the 
+various methods in the JavaScript. they are all connected by a form tag that when the user clicks *'save' they will be routed to data.php in which will record and
+update the data then post the new list to the user.
+
+*Finally there is a select tag that pulls from the employee database to put in a drop down menu which controls who is assigned to which table
+
+Methods
+
+initializeData() 
+	calls from php code to initialize the global html inputs that describe the number of tables, xLocation, yLocation, Occupancy, Number of Seats
+and who the server is. it will recreate the various data into one string and then recreate the arrays with the split method. Finally it will then 
+initialize the global variables with the array.
+
+This method is called once and page loaded
+
+setData()
+	Called after the global variables are initialized this will create tables (data loaded from database)on the canvas and set the event handlers 
+for manipulation later on
+
+*createTable()
+	When the user clicks on the add table button this will create a new table at position 10,10 ask the user how many seats are at the table, add event handlers
+for manipulation later on and set the server based on what the server spinner is currently on. Also the global variables are updated with the new info
+
+*dragger()
+	a function  used to let the user drag shapes across the canvas. important to note the numbers on the table are different variables and are also
+move in response to the tables being moved.
+
+*changeServer()
+	jQuery method that is called when a user double clicks on a table. Raphael handles the double click and redirects it to this function. the user has no options
+"Yes or No" if they click yes then the server will change to the server that is currently shown on the drop-down menu. No and nothing will happen at all and the message will delete itself.
+The User can also close the dialog box which nothing will happen and the message will delete itself.
+
+*fillTable()
+	Another jQuery method that is also called when the user double clicks. Raphael also handles the double click and redirects to this function. There
+are two choices "Yes or No". If Yes the table time stamp is recorded and stored in the global variable, If No the table time stamp is changed to empty
+and stored in global variable. The user can click the 'X' to close the message
+
+showTime()
+	when the user mouses over a table this function will run in which it will find the index in the tableList that corresponds to the matching table and then
+fires two functions calculateTime(index), showSeats(index);
+
+calculateTime(index)
+	this function will take the current time stamp, pull the old time stamp using the supplied index and calculate the difference between the two to see
+how much time has passed.
+	
+showSeats(index)
+	this function will use the index parameter to find how many seats are at the table provided by the global input variable
+	
+startTime()
+	Called when the page is finished loading this displays a clock of the current time
+
+checkTime()
+	Checks the time to see if the minutes or seconds have changed while starting the time.
+	
+updateTime()
+	Called to update the clock every second to display to the user the new time.
+	
+Make Reservation.php
+
+Html Tags:
+There is a form action that lets the user enter: name, email, phone, date, party, server to be added to the wait list as a reservation. the form goes to
+reservation.php which records the information sent, prints back the results to the customer and will even send a confirmation email to them.
+
+handleReservation.php
+
+the form action allows the host to record the name, party, server. when submitted the time stamp will be recorded the database will sort putting longer parties at the top
+and the post will re-route back to handleReservation.php 
+
+The php in the code will print off a list for the host with people who have been waiting more at the top of the listcompared to others. The host can delete
+people who are no shows from the list by using the dropdown menu to select their name and pressing the delete button.
+
+	
+
